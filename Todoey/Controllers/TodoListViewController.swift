@@ -10,14 +10,37 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+    var itemArray = [Item]()
+    //["Find Mike", "Buy Eggos", "Destroy Demogorgon",
+    //                 "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    //]
     
     let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+        let newItem1 = Item()
+        newItem1.title = "Find Mike"
+        itemArray.append(newItem1)
+        
+        let newItem2 = Item()
+        newItem2.title = "Buy Eggs"
+        itemArray.append(newItem2)
+
+        let newItem3 = Item()
+        newItem3.title = "Destroy Demogorgon"
+        itemArray.append(newItem3)
+        
+         let newItem4 = Item()
+        newItem4.title = "New Item 4"
+        itemArray.append(newItem4)
+        
+        let newItem5 = Item()
+        newItem5.title = "New Item 5"
+        itemArray.append(newItem5)
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
             itemArray = items
         }
         
@@ -31,17 +54,31 @@ class TodoListViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        cell.textLabel?.text = itemArray[indexPath.row]
-        return cell
+        //print("cellForRowAt: \(indexPath)")
         
+        /// NOTE: There is a strange bug when using dequeueReusableCell that causes the cells to be
+        /// reused when they leave the view via scrolling. The cell state (checked/uncheck) gets applies
+        /// when the cell gets deallocated fromt he top and then reapplied at the bottom when cells not in
+        /// the view are reused to show cells at the bottom.
+        /// The fix is to associtate the cell state with the item in the cell and not with the cell by creating a
+        /// a datamodel instead of simply using an array to fill the cells.
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        
+        let item = itemArray[indexPath.row]
+        cell.textLabel?.text = item.title
+        cell.accessoryType = item.isComplete ? .checkmark : .none
+        
+        return cell
     }
     
     //MARK - TableView Delegate Methods
     
-    /// Triggers an event to print out the name on the cell the user selected.
+    /// Triggers an event to toggle the item is completed.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected \(itemArray[indexPath.row])")
+        //print("You selected \(itemArray[indexPath.row])")
+        
+        /// Toggle the isComplete property for each
+        itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
         
         /// Add a check mark to the selected cell.
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
@@ -51,13 +88,15 @@ class TodoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
+        /// Call the data source again
+        tableView.reloadData()
+        
         /// This creates an effect that when the user presses a cell, it gets highligted and then when
         /// released the cell is deselected. Showing an interestg effect.
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-        // MARK - Add New Items
-    
+    // MARK - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
@@ -69,7 +108,12 @@ class TodoListViewController: UITableViewController {
             /// A text filed will NEVER == nil. So we can safely force unwrap it.
             /// can add validation code to make sure tha tit isn't empty. SHould alert the user and
             /// preven adding an empty item.
-            self.itemArray.append(textField.text!)
+            //self.itemArray.append(textField.text!)
+            
+            /// After changing the array contents from string to an object.
+            let newItem = Item()
+            newItem.title = textField.text!
+            self.itemArray.append(newItem)
             
             self.defaults.set(self.itemArray, forKey: "TodoListArray")
             
@@ -86,9 +130,6 @@ class TodoListViewController: UITableViewController {
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
-        
     }
-    
 }
 
