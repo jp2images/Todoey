@@ -15,10 +15,20 @@ class TodoListViewController: UITableViewController {
     //                 "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     //]
     
-    let defaults = UserDefaults.standard
+    /// Create a path to a new plist we will call Items.plist
+    let dataFilePath = FileManager.default
+        .urls(for: .documentDirectory, in: .userDomainMask).first?
+        .appendingPathComponent("Items.plist")
+    
+    /// Our app now has an object that is too complicated to store in UserDefaults
+    //let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("\(String(describing: dataFilePath))")
+        /// Path to the simulator's data location
+        //////Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
         
         let newItem1 = Item()
         newItem1.title = "Find Mike"
@@ -40,13 +50,12 @@ class TodoListViewController: UITableViewController {
         newItem5.title = "New Item 5"
         itemArray.append(newItem5)
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-            itemArray = items
-        }
-        
+//        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
+//            itemArray = items
+//        }
     }
     
-    // MARK - Tableview Datasource Methods
+    // MARK: - Tableview Datasource Methods
     
     /// Creates the 3 default cells created by the itemArray assignment.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,9 +80,9 @@ class TodoListViewController: UITableViewController {
         return cell
     }
     
-    //MARK - TableView Delegate Methods
+    // MARK: - TableView Delegate Methods
     
-    /// Triggers an event to toggle the item is completed.
+    /// Triggers an event to toggle the item is completed. (Saving the data)
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
         
@@ -88,15 +97,16 @@ class TodoListViewController: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
+        saveItems()
         /// Call the data source again
-        tableView.reloadData()
+        //tableView.reloadData()
         
         /// This creates an effect that when the user presses a cell, it gets highligted and then when
         /// released the cell is deselected. Showing an interestg effect.
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // MARK - Add New Items
+    // MARK: - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
@@ -114,10 +124,8 @@ class TodoListViewController: UITableViewController {
             let newItem = Item()
             newItem.title = textField.text!
             self.itemArray.append(newItem)
-            
-            self.defaults.set(self.itemArray, forKey: "TodoListArray")
-            
-            self.tableView.reloadData()
+            self.saveItems()
+
         }
         
         alert.addTextField { (alertTextField) in
@@ -131,5 +139,22 @@ class TodoListViewController: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
+    
+    //MARK: - Model Manipulation Methods
+    func saveItems() {
+        //self.defaults.set(self.itemArray, forKey: "TodoListArray")
+        let encoder = PropertyListEncoder()
+        
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array, \(error)")
+        }
+        /// Call the data source again
+        self.tableView.reloadData()
+    }
 }
+
+
 

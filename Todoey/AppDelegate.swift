@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// the first startup controller.
     /// Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        print("application: Did Finish Launching with options")
+        //print("application: Did Finish Launching with options")
         
         /// When running in a simulator. This will show the path of our sandbox where the applicaiton is
         /// running. We need the ID of it and the id of the items to show that they are really saved.
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Restart any tasks that were paused (or not yet started) while the application was inactive. If the
     /// application was previously in the background, optionally refresh the user interface.
     func applicationDidBecomeActive(_ application: UIApplication) {
-        print("applicationDidBecomeActive")
+        //print("applicationDidBecomeActive")
     }
 
     /// This can be triggered either by th euser or by the
