@@ -11,48 +11,20 @@ import UIKit
 class TodoListViewController: UITableViewController {
 
     var itemArray = [Item]()
-    //["Find Mike", "Buy Eggos", "Destroy Demogorgon",
-    //                 "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-    //]
     
     /// Create a path to a new plist we will call Items.plist
     let dataFilePath = FileManager.default
         .urls(for: .documentDirectory, in: .userDomainMask).first?
         .appendingPathComponent("Items.plist")
     
-    /// Our app now has an object that is too complicated to store in UserDefaults
-    //let defaults = UserDefaults.standard
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("\(String(describing: dataFilePath))")
         /// Path to the simulator's data location
         //////Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
+        print("\(String(describing: dataFilePath))")
         
-        let newItem1 = Item()
-        newItem1.title = "Find Mike"
-        itemArray.append(newItem1)
-        
-        let newItem2 = Item()
-        newItem2.title = "Buy Eggs"
-        itemArray.append(newItem2)
-
-        let newItem3 = Item()
-        newItem3.title = "Destroy Demogorgon"
-        itemArray.append(newItem3)
-        
-         let newItem4 = Item()
-        newItem4.title = "New Item 4"
-        itemArray.append(newItem4)
-        
-        let newItem5 = Item()
-        newItem5.title = "New Item 5"
-        itemArray.append(newItem5)
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [Item] {
-//            itemArray = items
-//        }
+        loadItems()
     }
     
     // MARK: - Tableview Datasource Methods
@@ -154,7 +126,18 @@ class TodoListViewController: UITableViewController {
         /// Call the data source again
         self.tableView.reloadData()
     }
+    
+    func loadItems() {
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
+                
+            }
+        }
+    }
+    
+    
 }
-
-
-

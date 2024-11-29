@@ -50,7 +50,6 @@
 		1F7B10D42CF499E500E5A0C9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
 				EB2BE4FF239524DB00FB933B /* Main.storyboard */,
 			);
 			path = Views;
@@ -89,6 +88,7 @@
 				1F7B10D42CF499E500E5A0C9 /* Views */,
 				1F7B10D52CF49A3F00E5A0C9 /* Supporting Files */,
 				EB2BE507239524DC00FB933B /* Info.plist */,
+				EB2BE504239524DC00FB933B /* LaunchScreen.storyboard */,
 			);
 			path = Todoey;
 			sourceTree = "<group>";

@@ -8,8 +8,8 @@
 
 import Foundation
 
-class Item: Encodable {
-    //class Item: Codable {
+class Item: Codable {
+    //class Istem: Codable {
     //let id: UUID
     var title: String = ""
     var isComplete: Bool = false
