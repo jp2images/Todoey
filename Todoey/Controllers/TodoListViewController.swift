@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListViewController: UITableViewController {
 
@@ -19,6 +20,9 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       // let persinstentContainer = NSPersistentContainer(name: "DataModel")
+        
         
         /// Path to the simulator's data location
         //////Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
