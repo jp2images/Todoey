@@ -12,23 +12,22 @@ import CoreData
 class TodoListViewController: UITableViewController {
 
     var itemArray = [Item]()
-    
     /// Create a path to a new plist we will call Items.plist
     let dataFilePath = FileManager.default
         .urls(for: .documentDirectory, in: .userDomainMask).first?
         .appendingPathComponent("Items.plist")
     
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       // let persinstentContainer = NSPersistentContainer(name: "DataModel")
-        
-        
         /// Path to the simulator's data location
-        //////Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
-        print("\(String(describing: dataFilePath))")
+        /// ///Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C
+        /// /data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
+        print("DataFilePath: \(String(describing: dataFilePath))")
         
-        loadItems()
+        //loadItems()
     }
     
     // MARK: - Tableview Datasource Methods
@@ -96,8 +95,10 @@ class TodoListViewController: UITableViewController {
             /// preven adding an empty item.
             //self.itemArray.append(textField.text!)
             
+
+            
             /// After changing the array contents from string to an object.
-            let newItem = Item()
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
             self.itemArray.append(newItem)
             self.saveItems()
@@ -119,29 +120,27 @@ class TodoListViewController: UITableViewController {
     //MARK: - Model Manipulation Methods
     func saveItems() {
         //self.defaults.set(self.itemArray, forKey: "TodoListArray")
-        let encoder = PropertyListEncoder()
         
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         } catch {
-            print("Error encoding item array, \(error)")
+            print("Error saving context, \(error)")
         }
         /// Call the data source again
         self.tableView.reloadData()
     }
     
-    func loadItems() {
-        if let data = try? Data(contentsOf: dataFilePath!){
-            let decoder = PropertyListDecoder()
-            do {
-                itemArray = try decoder.decode([Item].self, from: data)
-            } catch {
-                print("Error decoding item array, \(error)")
-                
-            }
-        }
-    }
+//    func loadItems() {
+//        if let data = try? Data(contentsOf: dataFilePath!){
+//            let decoder = PropertyListDecoder()
+//            do {
+//                itemArray = try decoder.decode([Item].self, from: data)
+//            } catch {
+//                print("Error decoding item array, \(error)")
+//                
+//            }
+//        }
+//    }
     
     
 }
