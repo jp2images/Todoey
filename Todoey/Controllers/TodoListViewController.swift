@@ -92,6 +92,7 @@ class TodoListViewController: UITableViewController {
             /// After changing the array contents from string to an object.
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.isComplete = false
             self.itemArray.append(newItem)
             
             self.saveItems()
