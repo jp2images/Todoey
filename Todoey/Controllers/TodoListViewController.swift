@@ -73,8 +73,6 @@ class TodoListViewController: UITableViewController {
         }
         
         saveItems()
-        /// Call the data source again
-        //tableView.reloadData()
         
         /// This creates an effect that when the user presses a cell, it gets highligted and then when
         /// released the cell is deselected. Showing an interestg effect.
@@ -89,29 +87,19 @@ class TodoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             /// What happens when the user adds item.
-            print("\(textField.text ?? "")")
-            /// A text filed will NEVER == nil. So we can safely force unwrap it.
-            /// can add validation code to make sure tha tit isn't empty. SHould alert the user and
-            /// preven adding an empty item.
-            //self.itemArray.append(textField.text!)
-            
-
+            // print("\(textField.text ?? "")")
             
             /// After changing the array contents from string to an object.
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             self.itemArray.append(newItem)
+            
             self.saveItems()
-
         }
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
-            /// Never prints anything from the next statement because it happens too early and there
-            /// is no value in the string variable.
-            //print(alertTextField.text)
-            //print("Now")
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
