@@ -12,22 +12,16 @@ import CoreData
 class TodoListViewController: UITableViewController {
 
     var itemArray = [Item]()
-    /// Create a path to a new plist we will call Items.plist
-    let dataFilePath = FileManager.default
-        .urls(for: .documentDirectory, in: .userDomainMask).first?
-        .appendingPathComponent("Items.plist")
-    
+    //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         /// Path to the simulator's data location
-        /// ///Users/jeff/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C
-        /// /data/Containers/Data/Application/32AE7D36-347C-4CF7-A8BE-C843CF238ADF/Documents/
-        print("DataFilePath: \(String(describing: dataFilePath))")
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         
-        //loadItems()
+        loadItems()
     }
     
     // MARK: - Tableview Datasource Methods
@@ -56,14 +50,11 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - TableView Delegate Methods
-    
     /// Triggers an event to toggle the item is completed. (Saving the data)
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
         
-        /// Toggle the isComplete property for each
-        itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
-        
+
         /// Add a check mark to the selected cell.
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
@@ -71,6 +62,9 @@ class TodoListViewController: UITableViewController {
         else{
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
+        
+        /// Toggle the isComplete property for each
+        itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
         
         saveItems()
         
@@ -83,11 +77,10 @@ class TodoListViewController: UITableViewController {
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "Add New Todoey Item", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add New Todoey Item", message: "",
+                                      preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            /// What happens when the user adds item.
-            // print("\(textField.text ?? "")")
             
             /// After changing the array contents from string to an object.
             let newItem = Item(context: self.context)
@@ -108,7 +101,6 @@ class TodoListViewController: UITableViewController {
     
     //MARK: - Model Manipulation Methods
     func saveItems() {
-        //self.defaults.set(self.itemArray, forKey: "TodoListArray")
         
         do {
             try context.save()
@@ -119,17 +111,15 @@ class TodoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
-//    func loadItems() {
-//        if let data = try? Data(contentsOf: dataFilePath!){
-//            let decoder = PropertyListDecoder()
-//            do {
-//                itemArray = try decoder.decode([Item].self, from: data)
-//            } catch {
-//                print("Error decoding item array, \(error)")
-//                
-//            }
-//        }
-//    }
+    func loadItems() {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest<Item>()
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching items from context, \(error)")
+        }
+    }
     
     
 }

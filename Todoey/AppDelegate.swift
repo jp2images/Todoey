@@ -64,13 +64,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// also applicationDidEnterBackground:.
     func applicationWillTerminate(_ application: UIApplication) {
         print("applicationDidEnterBackground")
+        self.saveContext()
     }
     
     //MARK: - Core Data Stack
     lazy var persistentContainer: NSPersistentContainer = {
         
-        let container = NSPersistentContainer(name: "DataModel")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+        let container: NSPersistentContainer = NSPersistentContainer(name: "DataModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription: NSPersistentStoreDescription, error: (any Error)?) in
             if let error = error as NSError? {
                 
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -81,7 +82,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: - Core Data Saving support
     func saveContext () {
-        let context = persistentContainer.viewContext
+        let context: NSManagedObjectContext = persistentContainer.viewContext
+        
+        /// let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
