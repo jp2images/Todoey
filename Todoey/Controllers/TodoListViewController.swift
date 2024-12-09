@@ -13,14 +13,15 @@ class TodoListViewController: UITableViewController {
 
     var itemArray = [Item]()
     //let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let context = (UIApplication.shared.delegate as!
+                   AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         /// Path to the simulator's data location
-        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        
+        print(FileManager.default.urls(for: .documentDirectory,
+                                       in: .userDomainMask))
         loadItems()
     }
     
@@ -54,18 +55,11 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
         
-
-        /// Add a check mark to the selected cell.
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }
-        else{
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
+        /// To Update existing items. Wwe do something like:
+        ///itemArray[indexPath.row].setValue(value(forKey: <#T##String#>))
         
         /// Toggle the isComplete property for each
         itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
-        
         saveItems()
         
         /// This creates an effect that when the user presses a cell, it gets highligted and then when
@@ -112,9 +106,10 @@ class TodoListViewController: UITableViewController {
     }
     
     func loadItems() {
-        
+        /// One of the few areas in Swift that we must specify the data type for the entity.
         let request: NSFetchRequest<Item> = Item.fetchRequest<Item>()
         do {
+            /// Pull everything in the data base into the context. Request is an array of Item(s)
             itemArray = try context.fetch(request)
         } catch {
             print("Error fetching items from context, \(error)")
