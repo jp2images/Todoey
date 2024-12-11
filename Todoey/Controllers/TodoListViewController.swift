@@ -20,11 +20,10 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchBar.text = "" //ERROR HERE on startup because it is NIL
+        
         /// Path to the simulator's data location
         print(FileManager.default.urls(for: .documentDirectory,
                                        in: .userDomainMask))
-        searchBar.delegate = self
         loadItems()
     }
     
@@ -118,9 +117,12 @@ class TodoListViewController: UITableViewController {
     }
     
     /// Read the existing items into the application
-    func loadItems() {
+    /// Use a default parameter for when we want to show all items
+    /// Also have an external parameter name to improve readability.
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+        
         /// One of the few areas in Swift that we must specify the data type for the entity.
-        let request: NSFetchRequest<Item> = Item.fetchRequest<Item>()
+        ///let request: NSFetchRequest<Item> = Item.fetchRequest<Item>()
         do {
             /// Pull everything in the data base into the context. Request is an array of Item(s)
             itemArray = try context.fetch(request)
@@ -135,7 +137,14 @@ class TodoListViewController: UITableViewController {
 extension TodoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        /// Read the text in the searchbar and search the database for that data
         let request: NSFetchRequest<Item> = Item.fetchRequest()
-        print(searchBar.text)
+        print(searchBar.text!)
+        
+        /// NSPredicate is a foundation object that is a query lanague
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        loadItems(with: request)
+                
     }
 }
