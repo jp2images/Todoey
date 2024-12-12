@@ -22,8 +22,8 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         
         /// Path to the simulator's data location
-        print(FileManager.default.urls(for: .documentDirectory,
-                                       in: .userDomainMask))
+//        print(FileManager.default.urls(for: .documentDirectory,
+//                                       in: .userDomainMask))
         loadItems()
     }
     
@@ -66,10 +66,8 @@ class TodoListViewController: UITableViewController {
         //context.delete(itemArray[indexPath.row])
         //itemArray.remove(at: indexPath.row)
         
-        
         /// Toggle the isComplete property for each
         itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
-        
         
         saveItems()
         
@@ -121,14 +119,15 @@ class TodoListViewController: UITableViewController {
     /// Also have an external parameter name to improve readability.
     func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         
-        /// One of the few areas in Swift that we must specify the data type for the entity.
-        ///let request: NSFetchRequest<Item> = Item.fetchRequest<Item>()
         do {
             /// Pull everything in the data base into the context. Request is an array of Item(s)
             itemArray = try context.fetch(request)
+            print(itemArray.count)
         } catch {
             print("Error fetching items from context, \(error)")
         }
+        /// Call the data source
+        tableView.reloadData()
     }
 
 }
@@ -139,12 +138,11 @@ extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         /// Read the text in the searchbar and search the database for that data
         let request: NSFetchRequest<Item> = Item.fetchRequest()
-        print(searchBar.text!)
-        
+
         /// NSPredicate is a foundation object that is a query lanague
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
         loadItems(with: request)
-                
     }
 }
