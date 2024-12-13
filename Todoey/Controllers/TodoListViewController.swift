@@ -122,7 +122,7 @@ class TodoListViewController: UITableViewController {
         do {
             /// Pull everything in the data base into the context. Request is an array of Item(s)
             itemArray = try context.fetch(request)
-            print(itemArray.count)
+            //print(itemArray.count)
         } catch {
             print("Error fetching items from context, \(error)")
         }
@@ -144,5 +144,15 @@ extension TodoListViewController: UISearchBarDelegate {
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
         
         loadItems(with: request)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            /// Dismiss this keyboard if it is showing and move the cursor from the searchBar
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
     }
 }
