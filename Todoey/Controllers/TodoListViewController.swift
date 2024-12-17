@@ -28,7 +28,6 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - Tableview Datasource Methods
-    
     /// Creates the 3 default cells created by the itemArray assignment.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -84,13 +83,10 @@ class TodoListViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            
-            /// After changing the array contents from string to an object.
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.isComplete = false
             self.itemArray.append(newItem)
-            
             self.saveItems()
         }
         
