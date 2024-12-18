@@ -12,7 +12,6 @@ import CoreData
 class CategoryViewController: UITableViewController {
 
     var categoryArray = [Category]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     let categoryContext = (UIApplication.shared.delegate as!
                            AppDelegate).persistentContainer.viewContext
     
@@ -23,9 +22,6 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /// Path to the simulator's data location
-        print(dataFilePath)
-        
         return categoryArray.count
     }
     
@@ -72,11 +68,6 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     //MARK: - Data Manipulation Methods
     func saveCategories() {
         do {
@@ -84,9 +75,13 @@ class CategoryViewController: UITableViewController {
         } catch {
             print("Error saving categoryContext: \(error)")
         }
+        
         self.tableView.reloadData()
     }
     
+    /// Read the existing items into the application
+    /// Use a default parameter for when we want to show all items
+    /// Also have an external parameter name to improve readability.
     func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
         
         do {

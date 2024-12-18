@@ -100,7 +100,6 @@ class TodoListViewController: UITableViewController {
     
     //MARK: - Model Manipulation Methods
     func saveItems() {
-        
         do {
             try context.save()
         } catch {
