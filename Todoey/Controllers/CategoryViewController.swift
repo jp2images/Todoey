@@ -11,7 +11,8 @@ import CoreData
 
 class CategoryViewController: UITableViewController {
 
-    var categoryArray = [Category]()
+    var categories = [Category]()
+    /// CRUD context for the data
     let categoryContext = (UIApplication.shared.delegate as!
                            AppDelegate).persistentContainer.viewContext
     
@@ -22,15 +23,19 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryArray.count
+        return categories.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         print("cellAtRow: \(indexPath)")
         
+        /// Create a reusable cell and adds it to the indexPath as a new category in the list
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        let category = categoryArray[indexPath.row]
-        cell.textLabel?.text = category.name
+        
+        cell.textLabel?.text = categories[indexPath.row].name
+        
+        //let category = categories[indexPath.row]
+        //cell.textLabel?.text = category.name
         
         return cell
     }
@@ -39,7 +44,7 @@ class CategoryViewController: UITableViewController {
     //MARK: - TableView Delegate Methods
     /// Notification when the user selects one of the CategoryViewController rows
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected didSelectRowAt: \(categoryArray[indexPath.row])")
+        print("You selected didSelectRowAt: \(categories[indexPath.row])")
         
         saveCategories()
         tableView.deselectRow(at: indexPath, animated: true)
@@ -53,18 +58,18 @@ class CategoryViewController: UITableViewController {
         let alert = UIAlertController(title: "Add New Category", message: "",
                                       preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Category", style: .default) { (action) in
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
             let newCategory = Category(context: self.categoryContext)
             newCategory.name = textField.text!
-            self.categoryArray.append(newCategory)
+            self.categories.append(newCategory)
             self.saveCategories()
         }
+        alert.addAction(action)
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter Category Name"
             textField = alertTextField
+            alertTextField.placeholder = "Add Category Name"
         }
-        alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
 
@@ -86,8 +91,8 @@ class CategoryViewController: UITableViewController {
         
         do {
             /// Pull all of the category types from the database to list to the user.
-            categoryArray = try categoryContext.fetch(request)
-            print("categoryArray count: \(categoryArray.count)")
+            categories = try categoryContext.fetch(request)
+            // print("categoryArray count: \(categories.count)")
         } catch {
             print("Error loading categories: \(error)")
         }

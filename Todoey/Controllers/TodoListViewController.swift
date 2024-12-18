@@ -38,7 +38,7 @@ class TodoListViewController: UITableViewController {
         
         /// NOTE: There is a strange bug when using dequeueReusableCell that causes the cells to be
         /// reused when they leave the view via scrolling. The cell state (checked/uncheck) gets applies
-        /// when the cell gets deallocated fromt he top and then reapplied at the bottom when cells not in
+        /// when the cell gets deallocated from the top and then reapplied at the bottom when cells not in
         /// the view are reused to show cells at the bottom.
         /// The fix is to associtate the cell state with the item in the cell and not with the cell by creating a
         /// a datamodel instead of simply using an array to fill the cells.
