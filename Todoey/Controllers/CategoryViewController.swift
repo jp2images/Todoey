@@ -34,20 +34,33 @@ class CategoryViewController: UITableViewController {
         
         cell.textLabel?.text = categories[indexPath.row].name
         
-        //let category = categories[indexPath.row]
-        //cell.textLabel?.text = category.name
-        
         return cell
     }
     
     
     //MARK: - TableView Delegate Methods
     /// Notification when the user selects one of the CategoryViewController rows
+    /// And send the user to the ToDoListViewController via the segue "GoToItems
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected didSelectRowAt: \(categories[indexPath.row])")
-        
-        saveCategories()
-        tableView.deselectRow(at: indexPath, animated: true)
+        print("You selected a Category in didSelectRowAt: \(categories[indexPath.row])")
+        ///TODO create a constant for the "goToITems" Segue name
+        performSegue(withIdentifier: "goToItems", sender: categories[indexPath.row])
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        print("Going to View Controller: \(segue.destination)")
+        /// Do a check for which seque was activated to navigate between more than one.
+        /// In this applicaiton we only have one, but it will be good to have an example for how to do more.
+        if segue.identifier == "goToItems" {
+            let destinationVC = segue.destination as! TodoListViewController
+            
+            /// Make sure we have a valid category
+            if let indexPath = tableView.indexPathForSelectedRow{
+                destinationVC.selectedCategory = categories[indexPath.row] 
+                
+            }
+            
+        }
     }
     
     
