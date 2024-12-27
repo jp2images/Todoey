@@ -18,8 +18,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This is the first function to load when the app starts up. It occurs before the viewDidLlad begins of
     /// the first startup controller.
     /// Override point for customization after application launch.
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions
+                     launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //print("application: Did Finish Launching with options")
+        
+        // *********************************************
+        // To locate where the Realm data is stored:
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+        // Location gets burried into the CoreSim.. like Sqlite does but also adds
+        // /default.realm db and need the app: Realm Browser to view
+        
+        // REALM DB Additions that MUST be replaced. REALM is no longer available.
+        // This is Adding data to REALM
+        let data = Data()
+        data.name = "Jeff"
+        data.age = 58
+        
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(data)
+            }
+        } catch {
+            print("Error initializing realm, \(error)")
+        }
+        // *********************************************
         
         /// When running in a simulator. This will show the path of our sandbox where the applicaiton is
         /// running. We need the ID of it and the id of the items to show that they are really saved.
