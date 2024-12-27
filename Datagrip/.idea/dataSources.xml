@@ -5,7 +5,7 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$USER_HOME$/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/9032792A-4995-4BA1-86AC-EC8940240D44/Library/Application Support/DataModel.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$USER_HOME$/Library/Developer/CoreSimulator/Devices/D2ED0674-9A67-489C-B12D-25F99310608C/data/Containers/Data/Application/FEDB0A77-1878-4785-A137-05B4092805DB/Library/Application Support/DataModel.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

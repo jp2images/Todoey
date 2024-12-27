@@ -23,8 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         /// When running in a simulator. This will show the path of our sandbox where the applicaiton is
         /// running. We need the ID of it and the id of the items to show that they are really saved.
-        //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
+        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        print(urls[urls.count-1] as URL)
+        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         return true
     }
 
