@@ -20,7 +20,7 @@ class Categoty: Object {
 //    }
     
     @objc dynamic var name: String = ""
-    
+    /// Forward relationship with the table Items.
     let items = List<Item>()
     
     

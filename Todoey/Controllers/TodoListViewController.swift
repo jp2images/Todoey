@@ -16,7 +16,7 @@ class TodoListViewController: UITableViewController {
     var itemArray = [Item]()
     var selectedCategory: Category? {
         didSet {
-            loadItems()
+            //loadItems() /// Commented out as part of Realm implementation.
         }
     }
     
@@ -86,11 +86,12 @@ class TodoListViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            let newItem = Item(context: self.context)
-            newItem.title = textField.text!
-            newItem.isComplete = false
-            newItem.parentCategory = self.selectedCategory
-            self.itemArray.append(newItem)
+// Commented while implementing Realm.
+//            let newItem = Item(context: self.context)
+//            newItem.title = textField.text!
+//            newItem.isComplete = false
+//            newItem.parentCategory = self.selectedCategory
+//            self.itemArray.append(newItem)
             
             self.saveItems()
         }
@@ -114,55 +115,57 @@ class TodoListViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    // Method commented out while implmenting Realm.
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
-    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
-        
-        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-        
-        if let additionalPredicate = predicate {
-            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-        } else{
-            request.predicate = categoryPredicate
-        }
-        
-        do {
-            /// Pull everything from the filtered request in the data base into the context.
-            /// Request is an array of Item(s)
-            itemArray = try context.fetch(request)
-            //print(itemArray.count)
-        } catch {
-            print("Error fetching items from context, \(error)")
-        }
-        /// Call the data source
-        tableView.reloadData()
-    }
+//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+//        
+//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+//        
+//        if let additionalPredicate = predicate {
+//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+//        } else{
+//            request.predicate = categoryPredicate
+//        }
+//        
+//        do {
+//            /// Pull everything from the filtered request in the data base into the context.
+//            /// Request is an array of Item(s)
+//            itemArray = try context.fetch(request)
+//            //print(itemArray.count)
+//        } catch {
+//            print("Error fetching items from context, \(error)")
+//        }
+//        /// Call the data source
+//        tableView.reloadData()
+//    }
 
 }
 
 //MARK: - Search Bar Methods
-extension TodoListViewController: UISearchBarDelegate {
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        /// Read the text in the searchbar and search the database for that data
-        let request: NSFetchRequest<Item> = Item.fetchRequest()
-
-        /// NSPredicate is a foundation object that is a query lanague
-        let predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
-        
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        
-        loadItems(with: request, predicate: predicate)
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text?.count == 0 {
-            loadItems()
-            /// Dismiss this keyboard if it is showing and move the cursor from the searchBar
-            DispatchQueue.main.async {
-                searchBar.resignFirstResponder()
-            }
-        }
-    }
-}
+//Commented out while implmenting Realm.
+//extension TodoListViewController: UISearchBarDelegate {
+//    
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//        /// Read the text in the searchbar and search the database for that data
+//        let request: NSFetchRequest<Item> = Item.fetchRequest()
+//
+//        /// NSPredicate is a foundation object that is a query lanague
+//        let predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
+//        
+//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+//        
+//        loadItems(with: request, predicate: predicate)
+//    }
+//    
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchBar.text?.count == 0 {
+//            loadItems()
+//            /// Dismiss this keyboard if it is showing and move the cursor from the searchBar
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
+//        }
+//    }
+//}

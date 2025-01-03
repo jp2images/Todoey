@@ -8,9 +8,11 @@
 
 import UIKit
 import CoreData
+//import RealmSwift
 
 class CategoryViewController: UITableViewController {
 
+    let realm = try! Realm()
     var categories = [Category]()
     /// CRUD context for the data
     let categoryContext = (UIApplication.shared.delegate as!
@@ -59,37 +61,18 @@ class CategoryViewController: UITableViewController {
                 destinationVC.selectedCategory = categories[indexPath.row] 
                 
             }
-            
         }
     }
     
-    
-    //MARK: - Add New Categories
-    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add New Category", message: "",
-                                      preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let newCategory = Category(context: self.categoryContext)
-            newCategory.name = textField.text!
-            self.categories.append(newCategory)
-            self.saveCategories()
-        }
-        alert.addAction(action)
-        
-        alert.addTextField { (alertTextField) in
-            textField = alertTextField
-            alertTextField.placeholder = "Add Category Name"
-        }
-        present(alert, animated: true, completion: nil)
-    }
 
     //MARK: - Data Manipulation Methods
-    func saveCategories() {
+    func save(category: Category) { /// Saving with Realm.
+    //func saveCategories() { /// Saving with CoreData
         do {
-            try categoryContext.save()
+            //try categoryContext.save() /// This saves the context which is used in CareData
+            try realm.write {
+                realm.add(category)
+            }
         } catch {
             print("Error saving categoryContext: \(error)")
         }
@@ -100,16 +83,45 @@ class CategoryViewController: UITableViewController {
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    func loadCategories() {
+    //func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+
+        ///let request : NSFetchRequest<Category> = Categoty.fetchRequest() /// This was changed to make it a parameter that we pass into the method.
+        /// At some point the video had it back when trying to add Realm and then the entire content of the
+        /// method was commented out. ????
         
-        do {
-            /// Pull all of the category types from the database to list to the user.
-            categories = try categoryContext.fetch(request)
-            // print("categoryArray count: \(categories.count)")
-        } catch {
-            print("Error loading categories: \(error)")
-        }
-        tableView.reloadData()
+// Removed during Realm implementation
+//        do {
+//            /// Pull all of the category types from the database to list to the user.
+//            categories = try categoryContext.fetch(request)
+//            // print("categoryArray count: \(categories.count)")
+//        } catch {
+//            print("Error loading categories: \(error)")
+//        }
+//        tableView.reloadData()
     }
     
+    //MARK: - Add New Categories
+    @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add New Category", message: "",
+                                      preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+            let newCategory = Category /// When using Realm and the Calss Category
+                                       //let newCategory = Category(context: self.categoryContext) /// For use with the SQLite DB and CoreData
+            newCategory.name = textField.text!
+            self.categories.append(newCategory)
+            //self.saveCategories() /// Call CoreData save thehod
+            self.save(category: newCategory) /// Call Real save method
+        }
+        alert.addAction(action)
+        
+        alert.addTextField { (alertTextField) in
+            textField = alertTextField
+            alertTextField.placeholder = "Add Category Name"
+        }
+        present(alert, animated: true, completion: nil)
+    }
 }
