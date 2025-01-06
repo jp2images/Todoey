@@ -10,7 +10,7 @@
 //Not using this file as we are creating some new files for the data context.
 
 import Foundation
-//import RealmSwift
+import RealmSwift
 
 /// Using the "Code-along" code witht eh Udemy course. Actually need to change this to Atlas Compass? or
 /// some other DB type TBD. Currently trying Atals but need to make sure the functionality in the class is

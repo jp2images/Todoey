@@ -7,16 +7,18 @@
 //
 
 import UIKit
-import CoreData
-//import RealmSwift
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
 
     let realm = try! Realm()
-    var categories = [Category]()
+    ///var categories = [Category]()
+    var categories: Results<Category>! /// Change the type of Categories to a Realm style
+                                       /// of container.
+    
     /// CRUD context for the data
-    let categoryContext = (UIApplication.shared.delegate as!
-                           AppDelegate).persistentContainer.viewContext
+//    let categoryContext = (UIApplication.shared.delegate as!
+//                           AppDelegate).persistentContainer.viewContext // Not using this with Realm
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,12 +85,19 @@ class CategoryViewController: UITableViewController {
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
-    func loadCategories() {
+    func loadCategories() { ///Using Realm we don'tt need to make this method
+        /// work with outside arguments.
+        /// WIth Real we read all of the categories in one line
+        categories = realm.objects(Category.self)
+        
+        /// With Realm we are using this function to read the Categories on startup.
     //func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
 
         ///let request : NSFetchRequest<Category> = Categoty.fetchRequest() /// This was changed to make it a parameter that we pass into the method.
         /// At some point the video had it back when trying to add Realm and then the entire content of the
         /// method was commented out. ????
+        
+
         
 // Removed during Realm implementation
 //        do {
@@ -112,7 +121,8 @@ class CategoryViewController: UITableViewController {
             let newCategory = Category /// When using Realm and the Calss Category
                                        //let newCategory = Category(context: self.categoryContext) /// For use with the SQLite DB and CoreData
             newCategory.name = textField.text!
-            self.categories.append(newCategory)
+            //self.categories.append(newCategory) /// With Realm, the data is
+            /// auto updating, so this line is not required.
             //self.saveCategories() /// Call CoreData save thehod
             self.save(category: newCategory) /// Call Real save method
         }
