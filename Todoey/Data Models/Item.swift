@@ -13,6 +13,6 @@ class Item: Object { // Create a class based on the RealmObject
     @objc dynamic var title: String = ""
     @objc dynamic var isComplete: Bool = false
     /// Reverse relationship with Category table
-    var parentCategory = LinkingObjects(fromType: Category.self, property: "items")
+    //var parentCategory = LinkingObjects(fromType: Category.self, property: "items")
     
 }

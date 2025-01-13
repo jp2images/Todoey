@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-class Categoty: Object {
+class Category: Object {
 //    @Persisted var id: Int
 //    @Persisted var name: String = ""
 //    @Persisted var color: String

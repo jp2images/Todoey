@@ -14,7 +14,7 @@ class CategoryViewController: UITableViewController {
     let realm = try! Realm()
     ///var categories = [Category]()
     var categories: Results<Category>! /// Change the type of Categories to a Realm style
-                                       /// of container.
+                                           /// of container.
     
     /// CRUD context for the data
 //    let categoryContext = (UIApplication.shared.delegate as!
@@ -60,8 +60,7 @@ class CategoryViewController: UITableViewController {
             
             /// Make sure we have a valid category
             if let indexPath = tableView.indexPathForSelectedRow{
-                destinationVC.selectedCategory = categories[indexPath.row] 
-                
+                destinationVC.selectedCategory = categories[indexPath.row]
             }
         }
     }
@@ -71,14 +70,13 @@ class CategoryViewController: UITableViewController {
     func save(category: Category) { /// Saving with Realm.
     //func saveCategories() { /// Saving with CoreData
         do {
-            //try categoryContext.save() /// This saves the context which is used in CareData
+            //try categoryContext.save() /// This saves the context which is used in CoreData
             try realm.write {
                 realm.add(category)
             }
         } catch {
             print("Error saving categoryContext: \(error)")
         }
-        
         self.tableView.reloadData()
     }
     
@@ -97,8 +95,6 @@ class CategoryViewController: UITableViewController {
         /// At some point the video had it back when trying to add Realm and then the entire content of the
         /// method was commented out. ????
         
-
-        
 // Removed during Realm implementation
 //        do {
 //            /// Pull all of the category types from the database to list to the user.
@@ -107,7 +103,7 @@ class CategoryViewController: UITableViewController {
 //        } catch {
 //            print("Error loading categories: \(error)")
 //        }
-//        tableView.reloadData()
+        tableView.reloadData()
     }
     
     //MARK: - Add New Categories
@@ -118,13 +114,13 @@ class CategoryViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            let newCategory = Category /// When using Realm and the Calss Category
+            //let newCategory = Category /// When using Realm and the Class Category
                                        //let newCategory = Category(context: self.categoryContext) /// For use with the SQLite DB and CoreData
-            newCategory.name = textField.text!
+            //newCategory.name = textField.text!
             //self.categories.append(newCategory) /// With Realm, the data is
             /// auto updating, so this line is not required.
             //self.saveCategories() /// Call CoreData save thehod
-            self.save(category: newCategory) /// Call Real save method
+            //self.save(category: newCategory) /// Call Real save method
         }
         alert.addAction(action)
         
