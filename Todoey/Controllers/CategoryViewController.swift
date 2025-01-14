@@ -12,22 +12,16 @@ import RealmSwift
 class CategoryViewController: UITableViewController {
 
     let realm = try! Realm()
-    ///var categories = [Category]()
-    var categories: Results<Category>! /// Change the type of Categories to a Realm style
-                                           /// of container.
-    
-    /// CRUD context for the data
-//    let categoryContext = (UIApplication.shared.delegate as!
-//                           AppDelegate).persistentContainer.viewContext // Not using this with Realm
-    
+    var categories: Results<Category>? /// Change the type of Categories to a Realm style
+                                       /// of container.
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+        //loadCategories()
     }
     
     //MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -36,7 +30,7 @@ class CategoryViewController: UITableViewController {
         /// Create a reusable cell and adds it to the indexPath as a new category in the list
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         
-        cell.textLabel?.text = categories[indexPath.row].name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
         
         return cell
     }
@@ -46,9 +40,9 @@ class CategoryViewController: UITableViewController {
     /// Notification when the user selects one of the CategoryViewController rows
     /// And send the user to the ToDoListViewController via the segue "GoToItems
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("You selected a Category in didSelectRowAt: \(categories[indexPath.row])")
+        //print("You selected a Category in didSelectRowAt: \(categories[indexPath.row])")
         ///TODO create a constant for the "goToITems" Segue name
-        performSegue(withIdentifier: "goToItems", sender: categories[indexPath.row])
+        performSegue(withIdentifier: "goToItems", sender: categories?[indexPath.row])
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -60,7 +54,7 @@ class CategoryViewController: UITableViewController {
             
             /// Make sure we have a valid category
             if let indexPath = tableView.indexPathForSelectedRow{
-                destinationVC.selectedCategory = categories[indexPath.row]
+                destinationVC.selectedCategory = categories?[indexPath.row]
             }
         }
     }
@@ -87,22 +81,6 @@ class CategoryViewController: UITableViewController {
         /// work with outside arguments.
         /// WIth Real we read all of the categories in one line
         categories = realm.objects(Category.self)
-        
-        /// With Realm we are using this function to read the Categories on startup.
-    //func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-
-        ///let request : NSFetchRequest<Category> = Categoty.fetchRequest() /// This was changed to make it a parameter that we pass into the method.
-        /// At some point the video had it back when trying to add Realm and then the entire content of the
-        /// method was commented out. ????
-        
-// Removed during Realm implementation
-//        do {
-//            /// Pull all of the category types from the database to list to the user.
-//            categories = try categoryContext.fetch(request)
-//            // print("categoryArray count: \(categories.count)")
-//        } catch {
-//            print("Error loading categories: \(error)")
-//        }
         tableView.reloadData()
     }
     
@@ -114,13 +92,6 @@ class CategoryViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
-            //let newCategory = Category /// When using Realm and the Class Category
-                                       //let newCategory = Category(context: self.categoryContext) /// For use with the SQLite DB and CoreData
-            //newCategory.name = textField.text!
-            //self.categories.append(newCategory) /// With Realm, the data is
-            /// auto updating, so this line is not required.
-            //self.saveCategories() /// Call CoreData save thehod
-            //self.save(category: newCategory) /// Call Real save method
         }
         alert.addAction(action)
         

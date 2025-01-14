@@ -91,10 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// This can be triggered either by th euser or by the
     /// operating system. Called when the application is about to terminate. Save data if appropriate. See
     /// also applicationDidEnterBackground:.
-    func applicationWillTerminate(_ application: UIApplication) {
-        print("applicationDidEnterBackground")
-        self.saveContext()
-    }
+//    func applicationWillTerminate(_ application: UIApplication) {
+//        print("applicationDidEnterBackground")
+//        self.saveContext()
+//    }
     
     //MARK: - Core Data Stack
 //    lazy var persistentContainer: NSPersistentContainer = {
@@ -110,19 +110,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //    }()
     
     //MARK: - Core Data Saving support
-    func saveContext () {
-        //let context: NSManagedObjectContext = persistentContainer.viewContext
-        
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
+//    func saveContext () {
+//        //let context: NSManagedObjectContext = persistentContainer.viewContext
+//        
+//        let context = persistentContainer.viewContext
+//        if context.hasChanges {
+//            do {
+//                try context.save()
+//            } catch {
+//                let nserror = error as NSError
+//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+//            }
+//        }
+//    }
     
     
     

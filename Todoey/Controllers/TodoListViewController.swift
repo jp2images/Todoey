@@ -15,14 +15,15 @@ class TodoListViewController: UITableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     
     var itemArray = [Item]()
+    
     var selectedCategory: Category? {
         didSet {
             //loadItems() /// Commented out as part of Realm implementation.
         }
     }
     
-    let context = (UIApplication.shared.delegate as!
-                   AppDelegate).persistentContainer.viewContext
+//    let itemsContext = (UIApplication.shared.delegate as!
+//                   AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +73,7 @@ class TodoListViewController: UITableViewController {
         /// Toggle the isComplete property for each
         itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
         
-        saveItems()
+       // saveItems()
         
         /// This creates an effect that when the user presses a cell, it gets highligted and then when
         /// released the cell is deselected. Showing an interestg effect.
@@ -87,14 +88,8 @@ class TodoListViewController: UITableViewController {
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-// Commented while implementing Realm.
-//            let newItem = Item(context: self.context)
-//            newItem.title = textField.text!
-//            newItem.isComplete = false
-//            newItem.parentCategory = self.selectedCategory
-//            self.itemArray.append(newItem)
             
-            self.saveItems()
+            //self.saveItems()
         }
         
         alert.addTextField { (alertTextField) in
@@ -106,14 +101,14 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK: - Model Manipulation Methods
-    func saveItems() {
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context, \(error)")
-        }
-        /// Call the data source again
-        self.tableView.reloadData()
+//    func saveItems() {
+//        do {
+//            try itemsContext.save()
+//        } catch {
+//            print("Error saving context, \(error)")
+//        }
+//        /// Call the data source again
+//        self.tableView.reloadData()
     }
     
     // Method commented out while implmenting Realm.
@@ -142,7 +137,7 @@ class TodoListViewController: UITableViewController {
 //        tableView.reloadData()
 //    }
 
-}
+//}
 
 //MARK: - Search Bar Methods
 //Commented out while implmenting Realm.
