@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
                      launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        //print("application: Did Finish Launching with options")
+        print("application: Did Finish Launching with options")
         
         // *********************************************
         // To locate where the Realm data is stored:
@@ -30,17 +30,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // REALM DB Additions that MUST be replaced. REALM is no longer available.
         // This is Adding data to REALM
-        let data = Data()
-        data.name = "Jeff"
-        data.age = 58
+//        let data = Data()
+//        data.name = "Jeff"
+//        data.age = 59
+        
         // Removed to prevent a continuous write in startup.
         
         do {
             let realm = try Realm()
             //Also removed to not write on startup.
-            try realm.write {
-                realm.add(data)
-            }
+//            try realm.write {
+//                realm.add(data)
+//            }
         } catch {
             print("Error initializing realm, \(error)")
         }

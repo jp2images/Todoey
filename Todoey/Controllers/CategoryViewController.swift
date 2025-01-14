@@ -11,12 +11,13 @@ import RealmSwift
 
 class CategoryViewController: UITableViewController {
 
-    let realm = try! Realm()
+    let realm = try! Realm() /// Initialize a new Realm instance.
+
     var categories: Results<Category>? /// Change the type of Categories to a Realm style
                                        /// of container.
     override func viewDidLoad() {
         super.viewDidLoad()
-        //loadCategories()
+        loadCategories()
     }
     
     //MARK: - TableView Datasource Methods
@@ -29,9 +30,7 @@ class CategoryViewController: UITableViewController {
         
         /// Create a reusable cell and adds it to the indexPath as a new category in the list
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
-        
         return cell
     }
     
@@ -61,38 +60,42 @@ class CategoryViewController: UITableViewController {
     
 
     //MARK: - Data Manipulation Methods
-    func save(category: Category) { /// Saving with Realm.
-    //func saveCategories() { /// Saving with CoreData
+    
+    func save(category: Category) {
         do {
-            //try categoryContext.save() /// This saves the context which is used in CoreData
             try realm.write {
                 realm.add(category)
             }
         } catch {
             print("Error saving categoryContext: \(error)")
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
-    func loadCategories() { ///Using Realm we don'tt need to make this method
-        /// work with outside arguments.
-        /// WIth Real we read all of the categories in one line
+    func loadCategories() {
         categories = realm.objects(Category.self)
         tableView.reloadData()
     }
     
     //MARK: - Add New Categories
+    
     @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
         let alert = UIAlertController(title: "Add New Category", message: "",
                                       preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+        let action = UIAlertAction(title: "Add", style: .default) {
+            (action) in
+            
+            let newCategory = Category()
+            newCategory.name = textField.text!
+            self.save(category: newCategory)
         }
+        
         alert.addAction(action)
         
         alert.addTextField { (alertTextField) in

@@ -10,17 +10,9 @@ import Foundation
 import RealmSwift
 
 class Category: Object {
-//    @Persisted var id: Int
-//    @Persisted var name: String = ""
-//    @Persisted var color: String
-    
-//    override class func primaryKey() -> String {
-//        return "id"
-//    }
     
     @objc dynamic var name: String = ""
+    
     /// Forward relationship with the table Items.
     let items = List<Item>()
-    
-    
 }
