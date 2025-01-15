@@ -7,23 +7,20 @@
 //
 
 import UIKit
-import CoreData
 import RealmSwift
 
 class TodoListViewController: UITableViewController {
 
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var itemArray = [Item]()
+    var todoItems: Results<Item>?
+    let realm = try! Realm()
     
     var selectedCategory: Category? {
         didSet {
-            //loadItems() /// Commented out as part of Realm implementation.
+            loadItems()
         }
     }
-    
-//    let itemsContext = (UIApplication.shared.delegate as!
-//                   AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +30,10 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - Tableview Datasource Methods
+    
     /// Creates the 3 default cells created by the itemArray assignment.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemArray.count
+        return todoItems?.count ?? 1 /// Optional chaining
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,14 +47,21 @@ class TodoListViewController: UITableViewController {
         /// a datamodel instead of simply using an array to fill the cells.
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         
-        let item = itemArray[indexPath.row]
-        cell.textLabel?.text = item.title
-        cell.accessoryType = item.isComplete ? .checkmark : .none
+        /// Optional binding check
+        if let item = todoItems?[indexPath.row] {
+            cell.textLabel?.text = item.title
+            
+            /// Ternary operator ==> value == condition ? value if true : value if false
+            cell.accessoryType = item.isComplete ? .checkmark : .none
+        } else{
+            cell.textLabel?.text = "No items added."
+        }
         
         return cell
     }
     
     // MARK: - TableView Delegate Methods
+    
     /// Triggers an event to toggle the item is completed. (Saving the data)
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
@@ -71,7 +76,7 @@ class TodoListViewController: UITableViewController {
         //itemArray.remove(at: indexPath.row)
         
         /// Toggle the isComplete property for each
-        itemArray[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
+        todoItems[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
         
        // saveItems()
         
@@ -90,8 +95,20 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
             //self.saveItems()
+            
+            if let currentCategory = self.selectedCategory {
+                do {
+                    try self.realm.write {
+                        let newItem = Item()
+                        newItem.title = textField.text!
+                        currentCategory.items.append(newItem)
+                    }
+                } catch {
+                        print("Error saving new item.")
+                    }
+            }
         }
-        
+            
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
@@ -101,7 +118,8 @@ class TodoListViewController: UITableViewController {
     }
     
     //MARK: - Model Manipulation Methods
-//    func saveItems() {
+    
+    func saveItems() {
 //        do {
 //            try itemsContext.save()
 //        } catch {
@@ -115,31 +133,17 @@ class TodoListViewController: UITableViewController {
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
-//    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
-//        
-//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
-//        
-//        if let additionalPredicate = predicate {
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
-//        } else{
-//            request.predicate = categoryPredicate
-//        }
-//        
-//        do {
-//            /// Pull everything from the filtered request in the data base into the context.
-//            /// Request is an array of Item(s)
-//            itemArray = try context.fetch(request)
-//            //print(itemArray.count)
-//        } catch {
-//            print("Error fetching items from context, \(error)")
-//        }
-//        /// Call the data source
-//        tableView.reloadData()
-//    }
+    func loadItems() {
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
 
-//}
+        /// Call the data source
+        tableView.reloadData()
+    }
+
+}
 
 //MARK: - Search Bar Methods
+
 //Commented out while implmenting Realm.
 //extension TodoListViewController: UISearchBarDelegate {
 //    

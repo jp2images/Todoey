@@ -21,31 +21,37 @@ class CategoryViewController: UITableViewController {
     }
     
     //MARK: - TableView Datasource Methods
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cellAtRow: \(indexPath)")
+        //print("cellAtRow: \(indexPath)")
         
         /// Create a reusable cell and adds it to the indexPath as a new category in the list
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+         
         return cell
     }
     
     
     //MARK: - TableView Delegate Methods
+    
     /// Notification when the user selects one of the CategoryViewController rows
     /// And send the user to the ToDoListViewController via the segue "GoToItems
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected a Category in didSelectRowAt: \(categories[indexPath.row])")
         ///TODO create a constant for the "goToITems" Segue name
-        performSegue(withIdentifier: "goToItems", sender: categories?[indexPath.row])
+        //performSegue(withIdentifier: "goToItems", sender: categories?[indexPath.row])
+        performSegue(withIdentifier: "goToItems", sender: self)
     }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         print("Going to View Controller: \(segue.destination)")
+        
         /// Do a check for which seque was activated to navigate between more than one.
         /// In this applicaiton we only have one, but it will be good to have an example for how to do more.
         if segue.identifier == "goToItems" {
