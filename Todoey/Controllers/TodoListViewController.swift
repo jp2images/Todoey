@@ -66,22 +66,18 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
         
-        /// To Update existing items. We do something like:
-        //itemArray[indexPath.row].setValue(value(forKey: StringValueToChange))
-
-        /// To remove an item from the todo list. Order matters for this function. The item must remain at
-        /// at the correct array index when updating the context otherwise the index will be out of sync
-        /// with the item array that is displayed to the user.
-        //context.delete(itemArray[indexPath.row])
-        //itemArray.remove(at: indexPath.row)
+        if let item = todoItems?[indexPath.row] {
+            do {
+                try realm.write {
+                    item.isComplete = !item.isComplete
+                    //realm.delete(item) /// To remove the item at the selected row
+                }
+            } catch {
+                print("Error saving done status, \(error)")
+            }
+        }
         
-        /// Toggle the isComplete property for each
-        todoItems[indexPath.row].isComplete = !itemArray[indexPath.row].isComplete
-        
-       // saveItems()
-        
-        /// This creates an effect that when the user presses a cell, it gets highligted and then when
-        /// released the cell is deselected. Showing an interestg effect.
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
@@ -94,8 +90,6 @@ class TodoListViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
-            //self.saveItems()
-            
             if let currentCategory = self.selectedCategory {
                 do {
                     try self.realm.write {
@@ -104,9 +98,10 @@ class TodoListViewController: UITableViewController {
                         currentCategory.items.append(newItem)
                     }
                 } catch {
-                        print("Error saving new item.")
-                    }
+                    print("Error saving new item.")
+                }
             }
+            self.tableView.reloadData()
         }
             
         alert.addTextField { (alertTextField) in
