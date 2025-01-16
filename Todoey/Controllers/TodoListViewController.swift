@@ -130,7 +130,6 @@ class TodoListViewController: UITableViewController {
     /// Also have an external parameter name to improve readability.
     func loadItems() {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
-
         /// Call the data source
         tableView.reloadData()
     }
@@ -139,28 +138,24 @@ class TodoListViewController: UITableViewController {
 
 //MARK: - Search Bar Methods
 
-//Commented out while implmenting Realm.
-//extension TodoListViewController: UISearchBarDelegate {
-//    
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        /// Read the text in the searchbar and search the database for that data
-//        let request: NSFetchRequest<Item> = Item.fetchRequest()
-//
-//        /// NSPredicate is a foundation object that is a query lanague
-//        let predicate = NSPredicate(format: "title CONTAINS %@", searchBar.text!)
-//        
-//        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//        
-//        loadItems(with: request, predicate: predicate)
-//    }
-//    
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//            loadItems()
-//            /// Dismiss this keyboard if it is showing and move the cursor from the searchBar
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//        }
-//    }
-//}
+///Commented out while implmenting Realm.
+extension TodoListViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        /// Read the text in the searchbar and search the database for that data
+        
+        todoItems = todoItems?
+            .filter("title CONTAINS[cd] %@", searchBar.text!)
+            .sorted(byKeyPath: "title", ascending: true )
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            /// Dismiss this keyboard if it is showing and move the cursor from the searchBar
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
