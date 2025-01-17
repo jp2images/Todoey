@@ -17,13 +17,15 @@ class CategoryViewController: UITableViewController {
                                        /// of container.
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+        loadCategories() /// Load all categories that are in the database on startup
     }
     
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories?.count ?? 1
+        return categories?.count ?? 1 /// If there are no categories then we will return (create)
+                                      /// one cell to add some text for the user to see that
+                                      /// there are no categories.
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -31,6 +33,9 @@ class CategoryViewController: UITableViewController {
         
         /// Create a reusable cell and adds it to the indexPath as a new category in the list
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        
+        /// If the cell created is only one and ther is no name. We add text indicating that there are no
+        /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
          
         return cell
@@ -39,12 +44,11 @@ class CategoryViewController: UITableViewController {
     
     //MARK: - TableView Delegate Methods
     
-    /// Notification when the user selects one of the CategoryViewController rows
+    /// Notification when the user selects (taps) one of the CategoryViewController rows
     /// And send the user to the ToDoListViewController via the segue "GoToItems
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected a Category in didSelectRowAt: \(categories[indexPath.row])")
         ///TODO create a constant for the "goToITems" Segue name
-        //performSegue(withIdentifier: "goToItems", sender: categories?[indexPath.row])
         performSegue(withIdentifier: "goToItems", sender: self)
     }
     
@@ -69,7 +73,7 @@ class CategoryViewController: UITableViewController {
     
     func save(category: Category) {
         do {
-            try realm.write {
+            try realm.write { /// Commit changes to the realm database
                 realm.add(category)
             }
         } catch {
@@ -83,14 +87,13 @@ class CategoryViewController: UITableViewController {
     /// Also have an external parameter name to improve readability.
     func loadCategories() {
         categories = realm.objects(Category.self)
-        tableView.reloadData()
+        tableView.reloadData() /// Calls ALL the table datasouce methods
     }
     
     //MARK: - Add New Categories
     
     @IBAction func AddButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
-        
         let alert = UIAlertController(title: "Add New Category", message: "",
                                       preferredStyle: .alert)
         

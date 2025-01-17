@@ -1,6 +1,5 @@
 //
 //  AppDelegate.swift
-//  Destini
 //
 //  Created by Philipp Muellauer on 01/09/2015.
 //  Copyright (c) 2015 London App Brewery. All rights reserved.
@@ -11,7 +10,6 @@ import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
 
     var window: UIWindow?
 
@@ -24,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // *********************************************
         // To locate where the Realm data is stored:
-        print(Realm.Configuration.defaultConfiguration.fileURL ?? "No file found")
+        // print(Realm.Configuration.defaultConfiguration.fileURL ?? "No file found")
         // Location gets burried into the CoreSim.. like Sqlite does but also adds
-        // /default.realm db and need the app: Realm Browser to view
+        // default.realm db and need the app: Realm Browser to view
         
         // REALM DB Additions that MUST be replaced. REALM is no longer available.
         // This is Adding data to REALM
@@ -34,10 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        data.name = "Jeff"
 //        data.age = 59
         
-        // Removed to prevent a continuous write in startup.
-        
         do {
-            let realm = try Realm()
+            _ = try Realm()
             //Also removed to not write on startup.
 //            try realm.write {
 //                realm.add(data)
@@ -96,36 +92,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print("applicationDidEnterBackground")
 //        self.saveContext()
 //    }
-    
-    //MARK: - Core Data Stack
-//    lazy var persistentContainer: NSPersistentContainer = {
-//        
-//        let container: NSPersistentContainer = NSPersistentContainer(name: "DataModel")
-//        container.loadPersistentStores(completionHandler: { (storeDescription: NSPersistentStoreDescription, error: (any Error)?) in
-//            if let error = error as NSError? {
-//                
-//                fatalError("Unresolved error \(error), \(error.userInfo)")
-//            }
-//        })
-//        return container
-//    }()
-    
-    //MARK: - Core Data Saving support
-//    func saveContext () {
-//        //let context: NSManagedObjectContext = persistentContainer.viewContext
-//        
-//        let context = persistentContainer.viewContext
-//        if context.hasChanges {
-//            do {
-//                try context.save()
-//            } catch {
-//                let nserror = error as NSError
-//                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-//            }
-//        }
-//    }
-    
-    
-    
 }
 

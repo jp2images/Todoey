@@ -10,9 +10,7 @@ import UIKit
 import RealmSwift
 
 class TodoListViewController: UITableViewController {
-
     @IBOutlet weak var searchBar: UISearchBar!
-    
     var todoItems: Results<Item>?
     let realm = try! Realm()
     
@@ -46,7 +44,6 @@ class TodoListViewController: UITableViewController {
         /// The fix is to associtate the cell state with the item in the cell and not with the cell by creating a
         /// a datamodel instead of simply using an array to fill the cells.
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
-        
         /// Optional binding check
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
@@ -65,7 +62,6 @@ class TodoListViewController: UITableViewController {
     /// Triggers an event to toggle the item is completed. (Saving the data)
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //print("You selected \(itemArray[indexPath.row])")
-        
         if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
@@ -76,7 +72,6 @@ class TodoListViewController: UITableViewController {
                 print("Error saving done status, \(error)")
             }
         }
-        
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -84,12 +79,12 @@ class TodoListViewController: UITableViewController {
     // MARK: - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
-        
         let alert = UIAlertController(title: "Add New Todoey Item", message: "",
                                       preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             
+            /// Action that happens when the user clicks the Add Item button on the UIAlert
             if let currentCategory = self.selectedCategory {
                 do {
                     try self.realm.write {
@@ -115,16 +110,6 @@ class TodoListViewController: UITableViewController {
     
     //MARK: - Model Manipulation Methods
     
-    func saveItems() {
-//        do {
-//            try itemsContext.save()
-//        } catch {
-//            print("Error saving context, \(error)")
-//        }
-//        /// Call the data source again
-//        self.tableView.reloadData()
-    }
-    
     // Method commented out while implmenting Realm.
     /// Read the existing items into the application
     /// Use a default parameter for when we want to show all items
@@ -132,9 +117,8 @@ class TodoListViewController: UITableViewController {
     func loadItems() {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "dateAdded", ascending: false)
         /// Call the data source
-        tableView.reloadData()
+        tableView.reloadData() /// Call ALL the table datasource methods
     }
-
 }
 
 //MARK: - Search Bar Methods
@@ -144,12 +128,11 @@ extension TodoListViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         /// Read the text in the searchbar and search the database for that data
-        
         todoItems = todoItems?
             .filter("title CONTAINS[cd] %@", searchBar.text!)
             .sorted(byKeyPath: "dateAdded", ascending: true )
         
-        tableView.reloadData()
+        tableView.reloadData() /// Call ALL the table datasource methods
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
