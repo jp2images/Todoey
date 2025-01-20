@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
 class CategoryViewController: UITableViewController {
 
@@ -28,15 +29,25 @@ class CategoryViewController: UITableViewController {
                                       /// there are no categories.
     }
     
+    /// The example from the Packagmanager information
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
+//        cell.delegate = self
+//        return cell
+//    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //print("cellAtRow: \(indexPath)")
         
         /// Create a reusable cell and adds it to the indexPath as a new category in the list
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
+
         /// If the cell created is only one and ther is no name. We add text indicating that there are no
         /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+        
+        cell.delegate = self
          
         return cell
     }
@@ -112,5 +123,23 @@ class CategoryViewController: UITableViewController {
             alertTextField.placeholder = "Add Category Name"
         }
         present(alert, animated: true, completion: nil)
+    }
+}
+
+//MARK: - Swipe Cell Delegate Method
+extension CategoryViewController: SwipeTableViewCellDelegate {
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard orientation == .right else { return nil }
+        
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            // handle action by updating model with deletion
+            print("Item was pretend deleted")
+        }
+        
+        // customize the action appearance
+        deleteAction.image = UIImage(named: "delete-icon")
+        
+        return [deleteAction]
     }
 }
