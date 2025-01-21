@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1F2765C62D2D5355002EE92E /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 1FC1DF522D2D518F001153AA /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		1F60E0112D3E6F31003F23B5 /* SwipeCellKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1F60E0102D3E6F31003F23B5 /* SwipeCellKit */; };
+		1F60E0132D3FC711003F23B5 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F60E0122D3FC711003F23B5 /* SwipeTableViewController.swift */; };
 		1F89639C2D104864000E9E22 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F89639B2D104864000E9E22 /* CategoryViewController.swift */; };
 		1FC1DF532D2D518F001153AA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1FC1DF522D2D518F001153AA /* RealmSwift */; };
 		1FEE92F92D2BFFEC0059F182 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1FEE92F82D2BFFEC0059F182 /* RealmSwift */; };
@@ -34,6 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F60E0122D3FC711003F23B5 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		1F89639B2D104864000E9E22 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 		EB2BE4F6239524DB00FB933B /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB2BE4F9239524DB00FB933B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			children = (
 				1F89639B2D104864000E9E22 /* CategoryViewController.swift */,
 				EB2BE4FD239524DB00FB933B /* TodoListViewController.swift */,
+				1F60E0122D3FC711003F23B5 /* SwipeTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -199,6 +202,7 @@
 			files = (
 				1F89639C2D104864000E9E22 /* CategoryViewController.swift in Sources */,
 				EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */,
+				1F60E0132D3FC711003F23B5 /* SwipeTableViewController.swift in Sources */,
 				EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

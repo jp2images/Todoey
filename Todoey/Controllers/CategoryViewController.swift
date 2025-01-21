@@ -19,6 +19,7 @@ class CategoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories() /// Load all categories that are in the database on startup
+        tableView.rowHeight = 75.0
     }
     
     //MARK: - TableView Datasource Methods
@@ -126,20 +127,4 @@ class CategoryViewController: UITableViewController {
     }
 }
 
-//MARK: - Swipe Cell Delegate Method
-extension CategoryViewController: SwipeTableViewCellDelegate {
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard orientation == .right else { return nil }
-        
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            // handle action by updating model with deletion
-            print("Item was pretend deleted")
-        }
-        
-        // customize the action appearance
-        deleteAction.image = UIImage(named: "delete-icon")
-        
-        return [deleteAction]
-    }
-}
+
