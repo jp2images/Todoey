@@ -8,9 +8,8 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
 
     let realm = try! Realm() /// Initialize a new Realm instance.
 
@@ -30,26 +29,13 @@ class CategoryViewController: UITableViewController {
                                       /// there are no categories.
     }
     
-    /// The example from the Packagmanager information
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SwipeTableViewCell
-//        cell.delegate = self
-//        return cell
-//    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //print("cellAtRow: \(indexPath)")
+        /// Call the base class method that will get the cell and return it so other things can be done to it here.
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        /// Create a reusable cell and adds it to the indexPath as a new category in the list
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath) as! SwipeTableViewCell
-
         /// If the cell created is only one and ther is no name. We add text indicating that there are no
         /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
-        
-        cell.delegate = self
-         
         return cell
     }
     
@@ -100,6 +86,23 @@ class CategoryViewController: UITableViewController {
     func loadCategories() {
         categories = realm.objects(Category.self)
         tableView.reloadData() /// Calls ALL the table datasouce methods
+    }
+    
+    //MARK: - Delet Data from Swipe
+    
+    override func updateModel(at indexPath: IndexPath) {
+        super.updateModel(at: indexPath)
+        
+        if let categoryForDeletion = self.categories?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(categoryForDeletion)
+                }
+            } catch {
+                print("Error deleting category: \(error)")
+            }
+        }
+        
     }
     
     //MARK: - Add New Categories

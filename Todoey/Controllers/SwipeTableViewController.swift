@@ -19,23 +19,25 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 
     }
     
+    ///TableView Datasource Methods
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        /// Create a reusable cell and adds it to the indexPath as a new category in the list
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",
+                                                 for: indexPath) as! SwipeTableViewCell
+        /// Set the delegate for all of the swipe functions to the cell
+        cell.delegate = self
+        return cell
+    }
+    
     /// Add swipe to delete functionality
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil }
         
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
             // handle action by updating model with deletion
-            if let categoryToDelete = self.categories?[indexPath.row] {// as? Category {
-                do {
-                    try self.realm.write {
-                        self.realm.delete(categoryToDelete) /// To remove the item at the selected row
-                        print("delete row \(indexPath.row)")
-                    }
-                } catch {
-                    print("Error saving done status, \(error)")
-                }
-                //tableView.reloadData()
-            }
+            print("Deleted Cell")
+            self.updateModel(at: indexPath)
         }
         
         // customize the action appearance
@@ -52,4 +54,11 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         return options
     }
 
+    /// Doesn't usually get called because it is overridden in the inherited classes. It can be called by
+    /// calling it as a super.updateModel from the inherited class.
+    func updateModel(at indexPath: IndexPath){
+        // Update the data model
+        
+        print("Updating the data model from the Super Class method.")
+    }
 }
