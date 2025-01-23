@@ -18,7 +18,6 @@ class CategoryViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories() /// Load all categories that are in the database on startup
-        tableView.rowHeight = 75.0
     }
     
     //MARK: - TableView Datasource Methods

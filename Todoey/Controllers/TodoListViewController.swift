@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
     var todoItems: Results<Item>?
     let realm = try! Realm()
@@ -24,7 +24,7 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         /// Since we are filtering with categories we don't need this call any longer becasue as it is written
         /// it will load all items (Maybe not a bad feature in the future)
-        //loadItems()
+        loadItems()
     }
     
     // MARK: - Tableview Datasource Methods
@@ -37,13 +37,17 @@ class TodoListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //print("cellForRowAt: \(indexPath)")
         
+        /// Call the base class method that will get the cell and return it so other things can be done to it here.
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
         /// NOTE: There is a strange bug when using dequeueReusableCell that causes the cells to be
         /// reused when they leave the view via scrolling. The cell state (checked/uncheck) gets applies
         /// when the cell gets deallocated from the top and then reapplied at the bottom when cells not in
         /// the view are reused to show cells at the bottom.
         /// The fix is to associtate the cell state with the item in the cell and not with the cell by creating a
         /// a datamodel instead of simply using an array to fill the cells.
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
+        
         /// Optional binding check
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
@@ -118,6 +122,23 @@ class TodoListViewController: UITableViewController {
         todoItems = selectedCategory?.items.sorted(byKeyPath: "dateAdded", ascending: false)
         /// Call the data source
         tableView.reloadData() /// Call ALL the table datasource methods
+    }
+
+
+//MARK: - Delet Data from Swipe
+
+    override func updateModel(at indexPath: IndexPath) {
+        //super.updateModel(at: indexPath)
+        
+        if let itemToDelete = todoItems?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(itemToDelete)
+                }
+            } catch {
+                print("Error deleting category: \(error)")
+            }
+        }
     }
 }
 
