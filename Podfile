@@ -8,6 +8,9 @@ target 'Todoey' do
   # Pods for Todoey
 
     # pod 'ChameleonFramework'
-    pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+    # pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
+    # pod 'ChameleonFramework/Swift', :git => 'https://github.com/wowansm/Chameleon.git',
+    #  :branch => 'swift5'
+    pod 'CyaneaOctopus'
 
 end

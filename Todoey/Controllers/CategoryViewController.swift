@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import CyaneaOctopus
 
 class CategoryViewController: SwipeTableViewController {
 
@@ -18,6 +19,8 @@ class CategoryViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories() /// Load all categories that are in the database on startup
+        tableView.separatorStyle = .none /// This doesn't seem to be necessary in Swift6?
+        
     }
     
     //MARK: - TableView Datasource Methods
@@ -35,6 +38,7 @@ class CategoryViewController: SwipeTableViewController {
         /// If the cell created is only one and ther is no name. We add text indicating that there are no
         /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
+        cell.backgroundColor = .randomFlatColor()
         return cell
     }
     
@@ -128,5 +132,4 @@ class CategoryViewController: SwipeTableViewController {
         present(alert, animated: true, completion: nil)
     }
 }
-
 
