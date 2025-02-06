@@ -13,6 +13,7 @@
 		1F89639C2D104864000E9E22 /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F89639B2D104864000E9E22 /* CategoryViewController.swift */; };
 		1FC1DF532D2D518F001153AA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1FC1DF522D2D518F001153AA /* RealmSwift */; };
 		1FEE92F92D2BFFEC0059F182 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 1FEE92F82D2BFFEC0059F182 /* RealmSwift */; };
+		1FEF8EA32D52357C00DA6AB0 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FEF8EA22D52357C00DA6AB0 /* UIColor+Hex.swift */; };
 		E3989EFD4898125061235152 /* Pods_Todoey.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99B53BD65679AD591C72BCF2 /* Pods_Todoey.framework */; };
 		EB2BE4FA239524DB00FB933B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4F9239524DB00FB933B /* AppDelegate.swift */; };
 		EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2BE4FD239524DB00FB933B /* TodoListViewController.swift */; };
@@ -39,6 +40,7 @@
 		1F546CE32D47A90E00530DC1 /* Todoey.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Todoey.xcodeproj; sourceTree = "<group>"; };
 		1F60E0122D3FC711003F23B5 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		1F89639B2D104864000E9E22 /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		1FEF8EA22D52357C00DA6AB0 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		77E500CE0C78EF8ABCEE059F /* Pods-Todoey.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Todoey.release.xcconfig"; path = "Target Support Files/Pods-Todoey/Pods-Todoey.release.xcconfig"; sourceTree = "<group>"; };
 		99B53BD65679AD591C72BCF2 /* Pods_Todoey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Todoey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A96D4E862621A29ADB2DAE5A /* Pods-Todoey.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Todoey.debug.xcconfig"; path = "Target Support Files/Pods-Todoey/Pods-Todoey.debug.xcconfig"; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				EB2BE4F7239524DB00FB933B /* Products */,
 				716BE7FB599F1D3FD2FBCCDF /* Frameworks */,
 				680B3C06CEF5C36853E90EEE /* Pods */,
+				1FEF8EA22D52357C00DA6AB0 /* UIColor+Hex.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -285,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FEF8EA32D52357C00DA6AB0 /* UIColor+Hex.swift in Sources */,
 				1F89639C2D104864000E9E22 /* CategoryViewController.swift in Sources */,
 				EB2BE4FE239524DB00FB933B /* TodoListViewController.swift in Sources */,
 				1F60E0132D3FC711003F23B5 /* SwipeTableViewController.swift in Sources */,

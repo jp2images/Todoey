@@ -15,8 +15,8 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.rowHeight = 75.0
+        //print("No categories added yet")
     }
     
     ///TableView Datasource Methods
