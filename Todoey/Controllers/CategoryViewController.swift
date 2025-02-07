@@ -11,42 +11,43 @@ import RealmSwift
 import CyaneaOctopus
 
 class CategoryViewController: SwipeTableViewController {
-
     let realm = try! Realm() /// Initialize a new Realm instance.
-
     var categories: Results<Category>? /// Change the type of Categories to a Realm style
                                        /// of container.
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories() /// Load all categories that are in the database on startup
         tableView.separatorStyle = .none /// This doesn't seem to be necessary in Swift6?
-        
     }
     
     //MARK: - TableView Datasource Methods
     
+    // This is running twice on startup? Need to learn why
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //let count = categories?.count ?? 1
-        //print("Category count: \(count)")
-        return categories?.count ?? 1 /// If there are no categories then we will return (create)
-                                      /// one cell to add some text for the user to see that
-                                      /// there are no categories.
-                                    
+        let count = categories?.count ?? 1
+        print("Category count: \(count)")
+        return count /// If there are no categories then we will return (create)
+                     /// one cell to add some text for the user to see that
+                     /// there are no categories.
     }
     
+    // This isn't getting called on startup when there is no content. :|
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         /// Call the base class method that will get the cell and return it so other things can be done to it here.
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        
         /// If the cell created is only one and there is no name. We add text indicating that there are no
         /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
-        //if cell.textLabel?.text == nil || cell.textLabel?.text == "" {
+  
+        if let categroy = categories?[indexPath.row] {
             cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
-        //} else{
+            //        var content = cell.defaultContentConfiguration()
+            //        content.text = categories?[indexPath.row].name ?? "No categories added yet"
+            //        cell.contentConfiguration = content
+            
             let colorString: String? = categories?[indexPath.row].color
-            cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#808080")
+            cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6")
             print("Color string: \(String(describing: colorString))")
-        //}
+        }
         return cell
     }
     
@@ -95,7 +96,7 @@ class CategoryViewController: SwipeTableViewController {
     /// Use a default parameter for when we want to show all items
     /// Also have an external parameter name to improve readability.
     func loadCategories() {
-        print("Loading Categories...")
+        print("loadCategories running...")
         categories = realm.objects(Category.self)
         tableView.reloadData() /// Calls ALL the table datasouce methods
     }

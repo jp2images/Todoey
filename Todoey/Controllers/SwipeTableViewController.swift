@@ -16,7 +16,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 75.0
-        //print("No categories added yet")
+        print("FROM super.viewDidLoad() No categories added yet")
     }
     
     ///TableView Datasource Methods
@@ -27,6 +27,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
                                                  for: indexPath) as! SwipeTableViewCell
         /// Set the delegate for all of the swipe functions to the cell
         cell.delegate = self
+        print("super.tableView(cellForRowAt:) Add a cell?")
         return cell
     }
     
@@ -58,7 +59,6 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     /// calling it as a super.updateModel from the inherited class.
     func updateModel(at indexPath: IndexPath){
         // Update the data model
-        
         print("Updating the data model from the Super Class method.")
     }
 }
