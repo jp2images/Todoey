@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import CyaneaOctopus
 
 class TodoListViewController: SwipeTableViewController {
     @IBOutlet weak var searchBar: UISearchBar!
@@ -51,6 +52,10 @@ class TodoListViewController: SwipeTableViewController {
         /// Optional binding check
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
+            
+            let itemColor: UIColor = .flatBlueColor()
+            cell.backgroundColor = itemColor.adjust(by: CGFloat(indexPath.row) / CGFloat(todoItems!.count)*100) /// It's Ok to force unwrap
+            cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
             
             /// Ternary operator ==> value == condition ? value if true : value if false
             cell.accessoryType = item.isComplete ? .checkmark : .none

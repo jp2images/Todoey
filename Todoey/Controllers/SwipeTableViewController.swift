@@ -62,3 +62,30 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         print("Updating the data model from the Super Class method.")
     }
 }
+
+
+extension UIColor {
+    var luminance: CGFloat {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        // Get the RGB components of the color
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        // Calculate the relative luminance
+        return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+    }
+    
+    func contrastingForegroundColor() -> UIColor {
+        return self.luminance > 0.5 ? .black : .white
+    }
+}
+
+//// Example usage
+//let backgroundColor = UIColor(red: 0.1, green: 0.6, blue: 0.3, alpha: 1.0)
+//let foregroundColor = backgroundColor.contrastingForegroundColor()
+//
+//print("Background Color: \(backgroundColor)")
+//print("Foreground Color: \(foregroundColor)")

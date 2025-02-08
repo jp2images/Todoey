@@ -38,7 +38,7 @@ class CategoryViewController: SwipeTableViewController {
         /// If the cell created is only one and there is no name. We add text indicating that there are no
         /// categories created. (This is a nice notice to the user, instead of showing an empty screen.
   
-        if let categroy = categories?[indexPath.row] {
+        if (categories?[indexPath.row]) != nil {
             cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added yet"
             //        var content = cell.defaultContentConfiguration()
             //        content.text = categories?[indexPath.row].name ?? "No categories added yet"
@@ -46,7 +46,8 @@ class CategoryViewController: SwipeTableViewController {
             
             let colorString: String? = categories?[indexPath.row].color
             cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6")
-            print("Color string: \(String(describing: colorString))")
+            cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
+            //print("Color string: \(String(describing: colorString))")
         }
         return cell
     }
@@ -130,7 +131,7 @@ class CategoryViewController: SwipeTableViewController {
             
             let newCategory = Category()
             newCategory.name = textField.text!
-            let categoryColor: CyaneaOctopus.UIColor = .randomFlatColor() ?? .gray
+            let categoryColor: UIColor = .randomFlatColor() ?? .gray
             newCategory.color = self.hexString(from: categoryColor)
             print("New Color: \(categoryColor)")
             self.save(category: newCategory)
