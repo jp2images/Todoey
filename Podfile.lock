@@ -1,0 +1,16 @@
+PODS:
+  - CyaneaOctopus (0.3.1)
+
+DEPENDENCIES:
+  - CyaneaOctopus
+
+SPEC REPOS:
+  trunk:
+    - CyaneaOctopus
+
+SPEC CHECKSUMS:
+  CyaneaOctopus: 6f683b8cee6c372419993a0e7de240c599edef1c
+
+PODFILE CHECKSUM: 4eb453c4d52fa6ee45c08abbefe8e4c7f30882dd
+
+COCOAPODS: 1.16.2
