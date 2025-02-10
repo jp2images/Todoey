@@ -44,9 +44,10 @@ class CategoryViewController: SwipeTableViewController {
             //        content.text = categories?[indexPath.row].name ?? "No categories added yet"
             //        cell.contentConfiguration = content
             
-            let colorString: String? = categories?[indexPath.row].color
-            cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6")
-            cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
+            if let colorString: String? = categories?[indexPath.row].color {
+                cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6")
+                cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
+            }
             //print("Color string: \(String(describing: colorString))")
         }
         return cell
@@ -147,14 +148,14 @@ class CategoryViewController: SwipeTableViewController {
     }
         
         
-        /// Convert the rendomly generated color into a hex value to save the color in the database.
-        func hexString(from color: UIColor) -> String {
-            let components = color.cgColor.components ?? [0, 0, 0, 0]
-            let red = Int(components[0] * 255)
-            let green = Int(components[1] * 255)
-            let blue = Int(components[2] * 255)
-            let alpha = Int(components[3] * 255)
-            return String(format: "#%02X%02X%02X%02X", red, green, blue, alpha)
-        }
+//        /// Convert the rendomly generated color into a hex value to save the color in the database.
+//        func hexString(from color: UIColor) -> String {
+//            let components = color.cgColor.components ?? [0, 0, 0, 0]
+//            let red = Int(components[0] * 255)
+//            let green = Int(components[1] * 255)
+//            let blue = Int(components[2] * 255)
+//            let alpha = Int(components[3] * 255)
+//            return String(format: "#%02X%02X%02X%02X", red, green, blue, alpha)
+//        }
         
 }

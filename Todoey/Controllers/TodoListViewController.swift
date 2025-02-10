@@ -15,7 +15,7 @@ class TodoListViewController: SwipeTableViewController {
     var todoItems: Results<Item>?
     let realm = try! Realm()
     
-    var selectedCategory: Category? {
+    var selectedCategory: Category? { /// This is the DTO
         didSet {
             loadItems()
         }
@@ -53,9 +53,10 @@ class TodoListViewController: SwipeTableViewController {
         if let item = todoItems?[indexPath.row] {
             cell.textLabel?.text = item.title
             
-            let itemColor: UIColor = .flatBlueColor()
-            cell.backgroundColor = itemColor.adjust(by: CGFloat(indexPath.row) / CGFloat(todoItems!.count)*100) /// It's Ok to force unwrap
-            cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
+            //let itemColor: UIColor = .flatBlueColor()
+            //cell.backgroundColor = itemColor
+            let colorString: String? = selectedCategory?.color
+            cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6").adjust(by: CGFloat(indexPath.row) / CGFloat(todoItems!.count)*100)
             
             /// Ternary operator ==> value == condition ? value if true : value if false
             cell.accessoryType = item.isComplete ? .checkmark : .none

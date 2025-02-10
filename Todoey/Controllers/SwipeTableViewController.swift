@@ -12,11 +12,11 @@ import SwipeCellKit
 /// Swipeable UITableViewCell/UICollectionViewCell based on the stock Mail.app, implemented in Swift.
 /// https://swiftpackageindex.com/SwipeCellKit/SwipeCellKit
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 75.0
-        print("FROM super.viewDidLoad() No categories added yet")
+        //print("FROM super.viewDidLoad() No categories added yet")
     }
     
     ///TableView Datasource Methods
@@ -27,7 +27,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
                                                  for: indexPath) as! SwipeTableViewCell
         /// Set the delegate for all of the swipe functions to the cell
         cell.delegate = self
-        print("super.tableView(cellForRowAt:) Add a cell?")
+        //print("super.tableView(cellForRowAt:) Add a cell?")
         return cell
     }
     
@@ -54,13 +54,24 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         //options.transitionStyle = .border
         return options
     }
-
+    
     /// Doesn't usually get called because it is overridden in the inherited classes. It can be called by
     /// calling it as a super.updateModel from the inherited class.
     func updateModel(at indexPath: IndexPath){
         // Update the data model
         print("Updating the data model from the Super Class method.")
     }
+
+    /// Convert the rendomly generated color into a hex value to save the color in the database.
+    func hexString(from color: UIColor) -> String {
+        let components = color.cgColor.components ?? [0, 0, 0, 0]
+        let red = Int(components[0] * 255)
+        let green = Int(components[1] * 255)
+        let blue = Int(components[2] * 255)
+        let alpha = Int(components[3] * 255)
+        return String(format: "#%02X%02X%02X%02X", red, green, blue, alpha)
+    }
+    
 }
 
 
