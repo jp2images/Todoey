@@ -23,8 +23,10 @@ class TodoListViewController: SwipeTableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /// Since we are filtering with categories we don't need this call any longer becasue as it is written
-        /// it will load all items (Maybe not a bad feature in the future)
+        
+        if let colorHex = selectedCategory?.color {
+            navigationController?.navigationBar.barTintColor = UIColor(hexString: colorHex)
+        }
         loadItems()
     }
     
