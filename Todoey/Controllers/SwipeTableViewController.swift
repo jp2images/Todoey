@@ -89,7 +89,7 @@ extension UIColor {
         return 0.2126 * red + 0.7152 * green + 0.0722 * blue
     }
     
-    func contrastingForegroundColor() -> UIColor {
+    func contrastingColorOf() -> UIColor {
         return self.luminance > 0.5 ? .black : .white
     }
 }

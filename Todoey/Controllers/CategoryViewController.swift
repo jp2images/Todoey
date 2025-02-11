@@ -46,7 +46,7 @@ class CategoryViewController: SwipeTableViewController {
             
             if let colorString: String? = categories?[indexPath.row].color {
                 cell.backgroundColor = UIColor(hexString: (colorString ?? UIColor.lightGray.toHexString(includeAlpha: false)) ?? "#1D9BF6")
-                cell.textLabel?.textColor = cell.backgroundColor!.contrastingForegroundColor()
+                cell.textLabel?.textColor = cell.backgroundColor!.contrastingColorOf()
             }
             //print("Color string: \(String(describing: colorString))")
         }
