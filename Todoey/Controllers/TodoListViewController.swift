@@ -32,12 +32,11 @@ class TodoListViewController: SwipeTableViewController {
             
             guard let navBar = navigationController?.navigationBar else { fatalError("Navigation contrioller does not exist") }
             
-            //if let navBarColor = UIColor(hexString: colorHex) {
-              
-                navBar.backgroundColor = UIColor(hexString: colorHex)
-                navBar.tintColor = UIColor(hexString: colorHex).contrastingColorOf()
-                searchBar.barTintColor = UIColor(hexString: colorHex)
-            //}
+            let navBarColor = UIColor(hexString: colorHex)
+            navBar.backgroundColor = navBarColor
+            navBar.tintColor = navBarColor.contrastingColorOf()
+            searchBar.barTintColor = navBarColor
+            navBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: navBarColor.contrastingColorOf()]
         }
     }
     
@@ -98,7 +97,7 @@ class TodoListViewController: SwipeTableViewController {
         tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
+    
     // MARK: - Add New Items
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
@@ -122,7 +121,7 @@ class TodoListViewController: SwipeTableViewController {
             }
             self.tableView.reloadData()
         }
-            
+        
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Create New Item"
             textField = alertTextField
@@ -142,10 +141,10 @@ class TodoListViewController: SwipeTableViewController {
         /// Call the data source
         tableView.reloadData() /// Call ALL the table datasource methods
     }
-
-
-//MARK: - Delet Data from Swipe
-
+    
+    
+    //MARK: - Delet Data from Swipe
+    
     override func updateModel(at indexPath: IndexPath) {
         //super.updateModel(at: indexPath)
         

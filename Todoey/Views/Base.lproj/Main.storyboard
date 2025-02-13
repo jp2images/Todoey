@@ -40,7 +40,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Items" id="xgp-NP-Uao">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="uY5-Yp-6t2">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="s9G-F5-wdT" id="acM-e6-HF0"/>
                             </connections>
